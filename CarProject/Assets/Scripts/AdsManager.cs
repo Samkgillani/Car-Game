@@ -1,17 +1,21 @@
 ﻿using GoogleMobileAds.Api;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdsManager : MonoBehaviour,IUnityAdsListener
+public class AdsManager : MonoBehaviour, IUnityAdsListener
 {
     public static AdsManager instance;
-    private BannerView smallBannerView;
-    private BannerView largeBannerView;
+    private BannerView bannerView;
     private InterstitialAd interstitial;
     public RewardedAd rewardedVideo;
-    public string unityID,unityRewardedID,unityInterstitialID;
-    public string admobID,admobSmallBannerID,admobLargeBannerID,admobInterstitialID,admobRewardedID;
+    public string unityID, unityInterstitial, unityRewarded,unityBanner;
+    public string bannerID, interstitialID, rewardedID;
+    public string testBannerID, testInterstitialID, testRewardedID;
+    AdSize bannerSize, lastBannerSize;
+    AdPosition bannerPosition, lastBannerPosition;
+    public bool testMode = false;
     private void Awake()
     {
         if (instance == null)
@@ -25,40 +29,59 @@ public class AdsManager : MonoBehaviour,IUnityAdsListener
     private void Start()
     {
         Advertisement.AddListener(this);
-        Advertisement.Initialize(unityID);
+        Advertisement.Initialize(unityID, testMode);
+        //if (testMode)
+        //{
+        //    bannerID = testBannerID;
+        //    interstitialID = testInterstitialID;
+        //    rewardedID = testRewardedID;
+        //}
         //MobileAds.Initialize(initStatus => { });
         //RequestInterstitial();
         //RequestRewarded();
     }
     public void ShowInterstitialAd()
     {
-        if (interstitial.IsLoaded())
-            interstitial.Show();
-        else if (Advertisement.IsReady(unityInterstitialID))
-            Advertisement.Show(unityInterstitialID);
+        if (Advertisement.IsReady(unityInterstitial))
+        {
+            Advertisement.Show(unityInterstitial);
+        }
+        //if (interstitial != null)
+        //{
+        //    if (interstitial.IsLoaded())
+        //    {
+        //        interstitial.Show();
+        //    }
+        //}
+        //else
+        //{
+        //    RequestInterstitial();
+        //}
     }
     public void ShowRewardedVideo()
     {
-        if (rewardedVideo.IsLoaded())
-            rewardedVideo.Show();
-        else if (Advertisement.IsReady(unityRewardedID))
-            Advertisement.Show(unityRewardedID);
+        if (Advertisement.IsReady(unityRewarded))
+        {
+            Advertisement.Show(unityRewarded);
+        }
+        //if (rewardedVideo.IsLoaded())
+        //    rewardedVideo.Show();
     }
     void RequestRewarded()
     {
-        rewardedVideo = new RewardedAd(admobRewardedID);
+        rewardedVideo = new RewardedAd(rewardedID);
         rewardedVideo.OnAdLoaded += HandleRewardedAdLoaded;
         rewardedVideo.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
         rewardedVideo.OnAdOpening += HandleRewardedAdOpening;
-        rewardedVideo.OnAdClosed += HandleRewardedAdClosed ;
+        rewardedVideo.OnAdClosed += HandleRewardedAdClosed;
         rewardedVideo.OnAdFailedToShow += HandleRewardedAdFailedToShow;
-        rewardedVideo.OnUserEarnedReward += HandleUserEarnedReward; 
+        rewardedVideo.OnUserEarnedReward += HandleUserEarnedReward;
         AdRequest request = new AdRequest.Builder().Build();
         rewardedVideo.LoadAd(request);
     }
     void RequestInterstitial()
     {
-        interstitial = new InterstitialAd(admobInterstitialID);
+        interstitial = new InterstitialAd(interstitialID);
         interstitial.OnAdLoaded += InterstitialHandleOnAdLoaded;
         interstitial.OnAdFailedToLoad += InterstitialHandleOnAdFailedToLoad;
         interstitial.OnAdOpening += InterstitialHandleOnAdOpened;
@@ -67,59 +90,55 @@ public class AdsManager : MonoBehaviour,IUnityAdsListener
         AdRequest request = new AdRequest.Builder().Build();
         interstitial.LoadAd(request);
     }
-    public void ShowSmallBanner()
+    void RequestBanner()
     {
-        if (smallBannerView != null)
-        {
-            smallBannerView.Show();
-        }
-        else
-        {
-            RequestSmallBanner();
-        }
-    }
-    void RequestSmallBanner()
-    {
-        smallBannerView = new BannerView(admobSmallBannerID, AdSize.Banner, AdPosition.Bottom);
-        smallBannerView.OnAdLoaded += BannerHandleOnAdLoaded;
-        smallBannerView.OnAdFailedToLoad += BannerHandleOnAdFailedToLoad;
-        smallBannerView.OnAdOpening += BannerHandleOnAdOpened;
-        smallBannerView.OnAdClosed += BannerHandleOnAdClosed;
-        smallBannerView.OnAdLeavingApplication += BannerHandleOnAdLeavingApplication;
+        bannerView = new BannerView(bannerID, bannerSize, bannerPosition);
+        bannerView.OnAdLoaded += BannerHandleOnAdLoaded;
+        bannerView.OnAdFailedToLoad += BannerHandleOnAdFailedToLoad;
+        bannerView.OnAdOpening += BannerHandleOnAdOpened;
+        bannerView.OnAdClosed += BannerHandleOnAdClosed;
+        bannerView.OnAdLeavingApplication += BannerHandleOnAdLeavingApplication;
         AdRequest request = new AdRequest.Builder().Build();
-        smallBannerView.LoadAd(request);
-    }  
-    void RequestLargeBanner()
-    {
-        largeBannerView = new BannerView(admobLargeBannerID, AdSize.MediumRectangle, AdPosition.TopLeft);
-        largeBannerView.OnAdLoaded += BannerHandleOnAdLoaded;
-        largeBannerView.OnAdFailedToLoad += BannerHandleOnAdFailedToLoad;
-        largeBannerView.OnAdOpening += BannerHandleOnAdOpened;
-        largeBannerView.OnAdClosed += BannerHandleOnAdClosed;
-        largeBannerView.OnAdLeavingApplication += BannerHandleOnAdLeavingApplication;
-        AdRequest request = new AdRequest.Builder().Build();
-        largeBannerView.LoadAd(request);
+        bannerView.LoadAd(request);
     }
-    public void ShowLargeBanner()
+    public void ShowBanner(AdSize _bannerSize, AdPosition _bannerPosition)
     {
-        if (largeBannerView != null)
+        if (Advertisement.IsReady(unityBanner))
         {
-            largeBannerView.Show();
+            Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
+            Advertisement.Banner.Show(unityBanner);
         }
-        else
-        {
-            RequestLargeBanner();
-        }
+        //bannerSize = _bannerSize;
+        //bannerPosition = _bannerPosition;
+        //if (bannerView == null)
+        //{
+        //    RequestBanner();
+        //}
+        //else
+        //{
+        //    if (lastBannerSize == _bannerSize && lastBannerPosition == _bannerPosition)
+        //    {
+        //        bannerView.Show();
+        //    }
+        //    else
+        //    {
+        //        DestroyBanner();
+        //        RequestBanner();
+        //    }
+        //}
     }
-    public void HideSmallBanner()
+    public void HideBanner()
     {
-        if (smallBannerView != null)
-            smallBannerView.Hide();
-    } 
-    public void HideLargeBanner()
+        if (bannerView != null)
+            bannerView.Hide();
+    }
+    public void DestroyBanner()
     {
-        if (largeBannerView != null)
-            largeBannerView.Hide();
+        if (bannerView != null)
+        {
+            bannerView.Destroy();
+            bannerView = null;
+        }
     }
     #region BannerCallBacks
     public void BannerHandleOnAdLoaded(object sender, EventArgs args)
@@ -206,8 +225,7 @@ public class AdsManager : MonoBehaviour,IUnityAdsListener
     }
     public void HandleUserEarnedReward(object sender, Reward args)
     {
-        GetReward();
-        MonoBehaviour.print("HandleAdLeavingApplication event received");
+        Invoke(nameof(GetReward), 0.1f);
     }
 
     void GetReward()
@@ -232,7 +250,10 @@ public class AdsManager : MonoBehaviour,IUnityAdsListener
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
-        throw new NotImplementedException();
+        if (showResult == ShowResult.Finished)
+        {
+            Invoke(nameof(GetReward), 0.1f);
+        }
     }
     #endregion
 

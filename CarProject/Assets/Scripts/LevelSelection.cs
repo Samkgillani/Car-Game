@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -28,6 +29,7 @@ public class LevelSelection : MonoBehaviour
     {
         AudioManager.instance.ButtonClick();
         MainMenu.levelNum = level-1;
+        Analytics.CustomEvent("LevelStart" + MainMenu.levelNum);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex+1);
     }
 }

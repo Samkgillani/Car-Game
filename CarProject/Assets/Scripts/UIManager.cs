@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -63,6 +64,7 @@ public class UIManager : MonoBehaviour
     {
         AudioManager.instance.ButtonClick();
         MainMenu.levelNum++;
+        Analytics.CustomEvent("LevelStart" + MainMenu.levelNum);
         if (MainMenu.levelNum > 19)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         else

@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
         if(!PlayerPrefs.HasKey("Sound"))
             PlayerPrefs.SetInt("Sound", 1);
         currentPanel = mainMenuPanel;
+        AdsManager.instance.ShowBanner(GoogleMobileAds.Api.AdSize.Banner,GoogleMobileAds.Api.AdPosition.Top);
         Time.timeScale = 1;
     }
     private void Update()
