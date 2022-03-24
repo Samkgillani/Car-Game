@@ -98,6 +98,9 @@ TextureImporter:
   - first:
       213: 2748396297729853354
     second: Atlas_24
+  - first:
+      213: -4446556834619780616
+    second: Atlas_25
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -324,10 +327,10 @@ TextureImporter:
       name: Atlas_8
       rect:
         serializedVersion: 2
-        x: 821
-        y: 761
-        width: 190
-        height: 190
+        x: 810
+        y: 757
+        width: 204
+        height: 204
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -346,9 +349,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 253
-        y: 448
+        y: 458
         width: 160
-        height: 325
+        height: 315
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -409,9 +412,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 66
-        y: 448
+        y: 457
         width: 180
-        height: 181
+        height: 172
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -556,9 +559,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 405
-        y: 340
+        y: 350
         width: 40
-        height: 62
+        height: 53
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -702,9 +705,9 @@ TextureImporter:
       name: Atlas_30
       rect:
         serializedVersion: 2
-        x: 5
-        y: 2
-        width: 620
+        x: 4
+        y: 6
+        width: 619
         height: 96
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -841,6 +844,48 @@ TextureImporter:
       bones: []
       spriteID: 4126f4fb16ea0f940800000000000000
       internalID: 5327950094024008212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_5
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 829
+        width: 106
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5789443fe565ecb50800000000000000
+      internalID: 6615319868462110837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_25
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 829
+        width: 106
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f117e62e18aa42c0800000000000000
+      internalID: -4446556834619780616
       vertices: []
       indices: 
       edges: []

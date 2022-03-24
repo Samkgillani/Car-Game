@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,16 +20,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        levels.GetChild(MainMenu.levelNum).gameObject.SetActive(true);
+        AdsManager.instance?.HideBanner();
+        UIManager.instance.levelCountTxt.text = (MainMenu.levelNum).ToString();
+        //levels.GetChild(MainMenu.levelNum-1).gameObject.SetActive(true);
         player = cars.GetChild(MainMenu.carNum).gameObject;
         player.SetActive(true);
-        checkPoint = startingPosition;
-        SetSpawnPosition();
+        Invoke(nameof(SetSpawnPosition),0.1f);
         cam.target = cars.GetChild(MainMenu.carNum);
         Time.timeScale = 1;
     }
     public void SetSpawnPosition()
     {
+        checkPoint = startingPosition;
         player.transform.position = checkPoint.position;
         player.transform.rotation = checkPoint.rotation;
     }

@@ -11,11 +11,11 @@ public class GamePlayCamera : MonoBehaviour
     public float distance = 1.5f;
     public float rotationYAxis = 0.0f, rotationXAxis = 0.0f;
     Quaternion rotation;
-    void Start()
-    {
-        Vector3 angles = transform.eulerAngles;
-        rotationYAxis = angles.y;
-    }
+    //void Start()
+    //{
+    //    Vector3 angles = transform.eulerAngles;
+    //    rotationYAxis = angles.y;
+    //}
     public static float ClampAngle(float angle)
     {
         if (angle < -360F)

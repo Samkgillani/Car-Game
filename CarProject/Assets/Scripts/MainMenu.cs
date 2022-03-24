@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     public static MainMenu instance;
-    public static int carNum,levelNum;
+    public static int carNum,levelNum=40;
      GameObject currentPanel;
     public GameObject mainMenuPanel,levelSelectionPanel,settingsPanel,quitPanel;
     public GameObject garageCamera;
+    public Text cashTxt;
     private void Awake()
     {
         if (instance == null)
@@ -22,9 +22,17 @@ public class MainMenu : MonoBehaviour
             PlayerPrefs.SetInt("Steering",1);
         if(!PlayerPrefs.HasKey("Sound"))
             PlayerPrefs.SetInt("Sound", 1);
+        PlayerPrefs.SetInt("car0",1);
+        carNum = PlayerPrefs.GetInt("currentCar");
         currentPanel = mainMenuPanel;
-        AdsManager.instance.ShowBanner(GoogleMobileAds.Api.AdSize.Banner,GoogleMobileAds.Api.AdPosition.Top);
+        AdsManager.instance?.ShowBanner(GoogleMobileAds.Api.AdSize.Banner,GoogleMobileAds.Api.AdPosition.Top);
         Time.timeScale = 1;
+        cashUpdate(PlayerPrefs.GetInt("cash"));
+    }
+    public void cashUpdate(int currentCash)
+    {
+        PlayerPrefs.SetInt("cash", currentCash);
+        cashTxt.text = currentCash.ToString();
     }
     private void Update()
     {

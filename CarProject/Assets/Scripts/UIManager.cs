@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +7,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public GameObject pausePanel,failPanel,completePanel,steering,arrows,steeringSelect, arrowsSelect,controlChangePanel;
+    public GameObject hudPanel;
+    public Text crashCountTxt, levelCountTxt;
     public Image[] lifeBars; 
     private void Awake()
     {
@@ -19,9 +19,8 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
-
         ChangeControls(SettingsPanel.isSteering);
-        if (MainMenu.levelNum==1)
+        if (MainMenu.levelNum==2)
             controlChangePanel.SetActive(true);
     }
     void ChangeControls(bool _isSteering)
@@ -62,10 +61,10 @@ public class UIManager : MonoBehaviour
     } 
     public void NextBtn()
     {
-        AudioManager.instance.ButtonClick();
+        AudioManager.instance?.ButtonClick();
         MainMenu.levelNum++;
         Analytics.CustomEvent("LevelStart" + MainMenu.levelNum);
-        if (MainMenu.levelNum > 19)
+        if (MainMenu.levelNum > 25)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         else
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

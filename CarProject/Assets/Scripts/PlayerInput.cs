@@ -6,15 +6,12 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] float arrowSpeedMultiplier, raceMultiplier;
     public bool racePressed, brakePressed;
     float arrowInput;
-    public GameObject mobileControls;
     bool isMobile=true;
     private void Start()
     {
 #if UNITY_EDITOR
         isMobile = false;
 #endif
-        if (isMobile)
-            mobileControls.SetActive(true);
     }
     private void Update()
     {

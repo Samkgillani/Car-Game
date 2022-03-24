@@ -1,6 +1,5 @@
 ﻿using GoogleMobileAds.Api;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -10,7 +9,7 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     private BannerView bannerView;
     private InterstitialAd interstitial;
     public RewardedAd rewardedVideo;
-    public string unityID, unityInterstitial, unityRewarded,unityBanner;
+    public string unityID = "4499733", unityInterstitial= "Interstitial_Android", unityRewarded= "Rewarded_Android", unityBanner= "Banner_Android";
     public string bannerID, interstitialID, rewardedID;
     public string testBannerID, testInterstitialID, testRewardedID;
     AdSize bannerSize, lastBannerSize;
@@ -129,16 +128,17 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     }
     public void HideBanner()
     {
-        if (bannerView != null)
-            bannerView.Hide();
+        Advertisement.Banner.Hide();
+        //if (bannerView != null)
+        //    bannerView.Hide();
     }
     public void DestroyBanner()
     {
-        if (bannerView != null)
-        {
-            bannerView.Destroy();
-            bannerView = null;
-        }
+        //if (bannerView != null)
+        //{
+        //    bannerView.Destroy();
+        //    bannerView = null;
+        //}
     }
     #region BannerCallBacks
     public void BannerHandleOnAdLoaded(object sender, EventArgs args)
@@ -167,7 +167,7 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
         MonoBehaviour.print("HandleAdLeavingApplication event received");
     }
     #endregion
-    #region InterstitialAds
+    #region InterstitialCallBacks
     public void InterstitialHandleOnAdLoaded(object sender, EventArgs args)
     {
         MonoBehaviour.print("HandleAdLoaded event received");
@@ -235,17 +235,14 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsReady(string placementId)
     {
-        throw new NotImplementedException();
     }
 
     public void OnUnityAdsDidError(string message)
     {
-        throw new NotImplementedException();
     }
 
     public void OnUnityAdsDidStart(string placementId)
     {
-        throw new NotImplementedException();
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)

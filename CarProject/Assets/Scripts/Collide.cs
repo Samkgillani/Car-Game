@@ -6,8 +6,12 @@ public class Collide : MonoBehaviour
 {
     public Material hitMat,tempMat;
     bool canHit=true;
-    int lifeCount=3;
+   public static int lifeCount=3;
     public Sprite fadedStar;
+    private void Start()
+    {
+        lifeCount = 3;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("ground"))
@@ -19,6 +23,7 @@ public class Collide : MonoBehaviour
                 tempMat = collision.gameObject.GetComponent<MeshRenderer>().material;
                 collision.gameObject.GetComponent<MeshRenderer>().material = hitMat;
                 lifeCount--;
+                UIManager.instance.crashCountTxt.text =(3-lifeCount).ToString();
                 UIManager.instance.lifeBars[lifeCount].sprite = fadedStar;
                 AudioManager.instance.CrashSound();
                 if (lifeCount <= 0)
