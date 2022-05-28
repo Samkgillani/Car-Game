@@ -3,44 +3,77 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
-    public static bool isSound, isSteering;
-    public Button steering, arrows, soundOn, soundOff;
-    public Sprite selected, notSelected;
-
+    public static bool isSound,isMusic, isSteering;
+    public Sprite selected, notSelected,on,off;
+    public Image soundImg, musicImg, steeringImg, arrowsImg;
     private void Start()
     {
         isSound = (PlayerPrefs.GetInt("Sound") == 1);
+        isMusic = (PlayerPrefs.GetInt("Music") == 1);
         isSteering = (PlayerPrefs.GetInt("Steering") == 1);
-        SelectBtn(soundOn.GetComponent<Image>(), soundOff.GetComponent<Image>(), isSound);
-        SelectBtn(steering.GetComponent<Image>(), arrows.GetComponent<Image>(), isSteering);
+        if(isSound)
+            soundImg.sprite = on;
+        else
+            soundImg.sprite = off;
+        if(isMusic)
+            musicImg.sprite = on;
+        else
+            musicImg.sprite = off;
+        if (isSteering)
+        {
+            steeringImg.sprite = selected;
+            arrowsImg.sprite = notSelected;
+        }
+        else
+        {
+            steeringImg.sprite = notSelected;
+            arrowsImg.sprite = selected;
+        }
     }
-    public void SoundChange(bool _isSound)
+    public void SoundChange()
     {
-        isSound = _isSound;
+        isSound = !isSound;
         PlayerPrefs.SetInt("Sound", isSound ? 1 : 0);
         if (isSound)
-            AudioManager.instance.loopAudio1.Play();
+        {
+            AudioListener.pause = false;
+            soundImg.sprite = on;
+        }
         else
+        {
+            soundImg.sprite = off;
+            AudioListener.pause = true;
+        }
+    }
+    public void MusicChange()
+    {
+        isMusic = !isMusic;
+        PlayerPrefs.SetInt("Music", isMusic ? 1 : 0);
+        if (isMusic)
+        {
+            AudioManager.instance.loopAudio1.Play();
+            musicImg.sprite = on;
+        }
+        else
+        {
+            musicImg.sprite = off;
             AudioManager.instance.loopAudio1.Stop();
-        SelectBtn(soundOn.GetComponent<Image>(), soundOff.GetComponent<Image>(), isSound);
+        }
     }
     public void ControlChange(bool _isSteering)
     {
         isSteering = _isSteering;
         PlayerPrefs.SetInt("Steering", isSteering ? 1 : 0);
-        SelectBtn(steering.GetComponent<Image>(), arrows.GetComponent<Image>(), isSteering);
-    }
-    void SelectBtn(Image img1,Image img2, bool isSelected)
-    {
-        if (isSelected)
+        if (isSteering)
         {
-            img1.sprite = selected;
-            img2.sprite = notSelected;
+            steeringImg.sprite = selected;
+            arrowsImg.sprite = notSelected;
         }
         else
         {
-            img1.sprite = notSelected;
-            img2.sprite = selected;
+            steeringImg.sprite = notSelected;
+            arrowsImg.sprite = selected;
         }
     }
+
 }

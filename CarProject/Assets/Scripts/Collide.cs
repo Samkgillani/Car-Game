@@ -14,7 +14,7 @@ public class Collide : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("ground"))
+        if (collision.gameObject.CompareTag("Barrier"))
         {
             if (canHit)
             {
@@ -27,7 +27,10 @@ public class Collide : MonoBehaviour
                 UIManager.instance.lifeBars[lifeCount].sprite = fadedStar;
                 AudioManager.instance.CrashSound();
                 if (lifeCount <= 0)
+                { 
                     UIManager.instance.failPanel.SetActive(true);
+                    AdsManager.instance?.ShowBanner(GoogleMobileAds.Api.AdSize.MediumRectangle, GoogleMobileAds.Api.AdPosition.TopLeft);
+                }
             }
         }
         if (collision.gameObject.CompareTag("Animate"))

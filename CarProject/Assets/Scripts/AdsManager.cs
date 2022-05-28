@@ -10,10 +10,10 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     private InterstitialAd interstitial;
     public RewardedAd rewardedVideo;
     public string unityID = "4499733", unityInterstitial= "Interstitial_Android", unityRewarded= "Rewarded_Android", unityBanner= "Banner_Android";
-    public string bannerID, interstitialID, rewardedID;
+    public string admobID= "ca-app-pub-5346214855207630~5236819506", bannerID= "ca-app-pub-5346214855207630/2660711338", interstitialID= "ca-app-pub-5346214855207630/9902822823", rewardedID= "ca-app-pub-5346214855207630/7050310654";
     public string testBannerID, testInterstitialID, testRewardedID;
-    AdSize bannerSize, lastBannerSize;
-    AdPosition bannerPosition, lastBannerPosition;
+    AdSize bannerSize;
+    AdPosition bannerPosition;
     public bool testMode = false;
     private void Awake()
     {
@@ -29,42 +29,45 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     {
         Advertisement.AddListener(this);
         Advertisement.Initialize(unityID, testMode);
-        //if (testMode)
-        //{
-        //    bannerID = testBannerID;
-        //    interstitialID = testInterstitialID;
-        //    rewardedID = testRewardedID;
-        //}
-        //MobileAds.Initialize(initStatus => { });
-        //RequestInterstitial();
-        //RequestRewarded();
+        if (testMode)
+        {
+            bannerID = testBannerID;
+            interstitialID = testInterstitialID;
+            rewardedID = testRewardedID;
+        }
+        MobileAds.Initialize(admobID);
+        RequestInterstitial();
+        RequestRewarded();
     }
     public void ShowInterstitialAd()
     {
-        if (Advertisement.IsReady(unityInterstitial))
+
+        if (interstitial != null)
         {
-            Advertisement.Show(unityInterstitial);
+            if (interstitial.IsLoaded())
+            {
+                interstitial.Show();
+            }
+            else if (Advertisement.IsReady(unityInterstitial))
+            {
+                Advertisement.Show(unityInterstitial);
+            }
         }
-        //if (interstitial != null)
-        //{
-        //    if (interstitial.IsLoaded())
-        //    {
-        //        interstitial.Show();
-        //    }
-        //}
-        //else
-        //{
-        //    RequestInterstitial();
-        //}
+        else
+        {
+            RequestInterstitial();
+            if (Advertisement.IsReady(unityInterstitial))
+            {
+                Advertisement.Show(unityInterstitial);
+            }
+        }
     }
     public void ShowRewardedVideo()
     {
-        if (Advertisement.IsReady(unityRewarded))
-        {
+        if (rewardedVideo.IsLoaded())
+            rewardedVideo.Show();
+        else if (Advertisement.IsReady(unityRewarded))
             Advertisement.Show(unityRewarded);
-        }
-        //if (rewardedVideo.IsLoaded())
-        //    rewardedVideo.Show();
     }
     void RequestRewarded()
     {
@@ -102,43 +105,45 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     }
     public void ShowBanner(AdSize _bannerSize, AdPosition _bannerPosition)
     {
-        if (Advertisement.IsReady(unityBanner))
+        //if (Advertisement.IsReady(unityBanner))
+        //{
+        //    Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
+        //    Advertisement.Banner.Show(unityBanner);
+        //}
+        if (bannerView == null)
         {
-            Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
-            Advertisement.Banner.Show(unityBanner);
+            bannerSize = _bannerSize;
+            bannerPosition = _bannerPosition;
+            RequestBanner();
         }
-        //bannerSize = _bannerSize;
-        //bannerPosition = _bannerPosition;
-        //if (bannerView == null)
-        //{
-        //    RequestBanner();
-        //}
-        //else
-        //{
-        //    if (lastBannerSize == _bannerSize && lastBannerPosition == _bannerPosition)
-        //    {
-        //        bannerView.Show();
-        //    }
-        //    else
-        //    {
-        //        DestroyBanner();
-        //        RequestBanner();
-        //    }
-        //}
+        else
+        {
+            if (bannerSize == _bannerSize && bannerPosition == _bannerPosition)
+            {
+                bannerView.Show();
+            }
+            else
+            {
+                DestroyBanner();
+                bannerSize = _bannerSize;
+                bannerPosition = _bannerPosition;
+                RequestBanner();
+            }
+        }
     }
     public void HideBanner()
     {
-        Advertisement.Banner.Hide();
-        //if (bannerView != null)
-        //    bannerView.Hide();
+        //Advertisement.Banner.Hide();
+        if (bannerView != null)
+            bannerView.Hide();
     }
     public void DestroyBanner()
     {
-        //if (bannerView != null)
-        //{
-        //    bannerView.Destroy();
-        //    bannerView = null;
-        //}
+        if (bannerView != null)
+        {
+            bannerView.Destroy();
+            bannerView = null;
+        }
     }
     #region BannerCallBacks
     public void BannerHandleOnAdLoaded(object sender, EventArgs args)
@@ -230,7 +235,12 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
 
     void GetReward()
     {
-        Debug.Log("Reward kuch nhi rakha");
+        if (MainMenu.rewardCounter == 0)
+        {
+            PlayerPrefs.SetInt("car" + MainMenu.carNum, 1);
+            MainMenu.instance.mainMenuPanel.SetActive(false);
+            MainMenu.instance.mainMenuPanel.SetActive(true);
+        }
     }
 
     public void OnUnityAdsReady(string placementId)

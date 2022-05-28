@@ -5,16 +5,16 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class GaragePanel : MonoBehaviour
 {
-    [SerializeField]float[] accelerationAmount, handlingAmount, brakeAmount;
     [SerializeField] int[] carCosts;
     [SerializeField] string[] carNames;
     public Text carNameTxt,carCostTxt;
-    public Image accelerationImg, handlingImg, brakeImg;
     List<GameObject> cars;
-    public Transform carsParent;
-    public GameObject buyBtn, selectBtn;
+    public Transform carsParent,carsSpecsParent;
+    public GameObject buyBtn,watchVideoBtn, selectBtn;
     IEnumerator Start()
     {
+        if (Time.timeScale == 0)
+            Time.timeScale = 1;
         yield return new WaitForSeconds(0.1f);
         cars = new List<GameObject>();
         foreach (Transform t in carsParent)
@@ -22,8 +22,8 @@ public class GaragePanel : MonoBehaviour
             cars.Add(t.gameObject);
         }
         cars[MainMenu.carNum].SetActive(true);
-        SetDetails();
     }
+
     public void NextCar(string side)
     {
         AudioManager.instance.ButtonClick();
@@ -51,16 +51,20 @@ public class GaragePanel : MonoBehaviour
         if (PlayerPrefs.GetInt("car" + MainMenu.carNum) == 1)
         {
             buyBtn.SetActive(false);
+            watchVideoBtn.SetActive(false);
             selectBtn.SetActive(true);
         }
         else
         {
             buyBtn.SetActive(true);
+            watchVideoBtn.SetActive(true);
             selectBtn.SetActive(false);
         }
-        accelerationImg.fillAmount = accelerationAmount[MainMenu.carNum];
-        handlingImg.fillAmount = handlingAmount[MainMenu.carNum];
-        brakeImg.fillAmount = brakeAmount[MainMenu.carNum];
+        for (int i = 0; i < carsSpecsParent.childCount; i++)
+        {
+            carsSpecsParent.GetChild(i).gameObject.SetActive(false);
+        }
+            carsSpecsParent.GetChild(MainMenu.carNum).gameObject.SetActive(true);
         carNameTxt.text = carNames[MainMenu.carNum];
         carCostTxt.text = carCosts[MainMenu.carNum].ToString();
     }
@@ -76,6 +80,7 @@ public class GaragePanel : MonoBehaviour
             MainMenu.instance.cashUpdate(PlayerPrefs.GetInt("cash")-carCosts[MainMenu.carNum]);
             PlayerPrefs.SetInt("car" + MainMenu.carNum, 1);
             buyBtn.SetActive(false);
+            watchVideoBtn.SetActive(false);
             selectBtn.SetActive(true);
         }
     }
@@ -83,7 +88,8 @@ public class GaragePanel : MonoBehaviour
     {
         if (MainMenu.instance?.garageCamera != null)
             MainMenu.instance?.garageCamera.SetActive(true);
-    }  
+        Invoke(nameof(SetDetails),0.1f);
+    }
     private void OnDisable()
     {
         if(MainMenu.instance?.garageCamera!=null)

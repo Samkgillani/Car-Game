@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -17,8 +18,15 @@ public class AudioManager : MonoBehaviour
     }
     void Start()
     {
+        if(SceneManager.GetActiveScene().buildIndex==1)
             loopAudio1.clip = audioClips.mainMenuTheme;
-        if (PlayerPrefs.GetInt("Sound") == 1)
+        else
+            loopAudio1.clip = audioClips.gamePlayTheme;
+        if (PlayerPrefs.GetInt("Sound")==1)
+        {
+            AudioListener.pause = false;
+        }
+        if (PlayerPrefs.GetInt("Music") == 1)
         { 
             loopAudio1.Play();
         }

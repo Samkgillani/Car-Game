@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="AudioClips",menuName ="ScriptableObjects/AudioClips")]
 public class AudioClips : ScriptableObject
 {
-    public AudioClip mainMenuTheme,buttonClick,crashSound,reverseSound;
+    public AudioClip mainMenuTheme,gamePlayTheme,buttonClick,crashSound,reverseSound;
 }

@@ -11,6 +11,12 @@ public class GamePlayCamera : MonoBehaviour
     public float distance = 1.5f;
     public float rotationYAxis = 0.0f, rotationXAxis = 0.0f;
     Quaternion rotation;
+    public static GamePlayCamera instance;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
     //void Start()
     //{
     //    Vector3 angles = transform.eulerAngles;
@@ -37,6 +43,14 @@ public class GamePlayCamera : MonoBehaviour
             transform.rotation = rotation;
             transform.position = position;
         }
+    }
+    public void FinalSettings()
+    {
+        distance = 6;
+        currentHeight = 1;
+        rotationXAxis = 8;
+        GameManager.instance.player.GetComponent<CarProperties>().finalCam.SetActive(true);
+        target = GameManager.instance.player.GetComponent<CarProperties>().finalCam.transform;
     }
     public void isTouching(bool _isTouch)
     {

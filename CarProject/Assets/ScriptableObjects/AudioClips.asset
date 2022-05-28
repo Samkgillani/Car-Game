@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6261e2e3580a4284c9be86cf4c027640, type: 3}
   m_Name: AudioClips
   m_EditorClassIdentifier: 
-  mainMenuTheme: {fileID: 8300000, guid: fc54b995d67fe374a9150103f3b9053d, type: 3}
+  mainMenuTheme: {fileID: 8300000, guid: 23699399b097c9d4b8d95e63d478581a, type: 3}
+  gamePlayTheme: {fileID: 8300000, guid: fc54b995d67fe374a9150103f3b9053d, type: 3}
   buttonClick: {fileID: 8300000, guid: ff78b66352414d2429de87f20834ccb5, type: 3}
   crashSound: {fileID: 8300000, guid: 2524f24b3e2e67a48b78913ac9f38af1, type: 3}
   reverseSound: {fileID: 8300000, guid: 6f8fc5ec50bae2645a8affcf9ec5827b, type: 3}

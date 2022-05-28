@@ -7,8 +7,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public GameObject pausePanel,failPanel,completePanel,steering,arrows,steeringSelect, arrowsSelect,controlChangePanel;
-    public GameObject hudPanel;
+    public GameObject hudPanel,loadingPanel;
     public Text crashCountTxt, levelCountTxt;
+    public Sprite brightStar;
     public Image[] lifeBars; 
     private void Awake()
     {
@@ -42,12 +43,14 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0;
         AudioManager.instance.ButtonClick();
         pausePanel.SetActive(true);
+        AdsManager.instance?.ShowBanner(GoogleMobileAds.Api.AdSize.MediumRectangle, GoogleMobileAds.Api.AdPosition.TopLeft);
     }
     public void ResumeBtn()
     {
         Time.timeScale = 1;
         AudioManager.instance.ButtonClick();
         pausePanel.SetActive(false);
+        AdsManager.instance?.HideBanner();
     }
     public void HomeBtn()
     {
@@ -57,14 +60,22 @@ public class UIManager : MonoBehaviour
     public void RestartBtn()
     {
         AudioManager.instance.ButtonClick();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    } 
+        loadingPanel.SetActive(true);
+        failPanel.SetActive(false);
+        AdsManager.instance?.HideBanner();
+        Collide.lifeCount = 3;
+        for (int i = 0; i < lifeBars.Length; i++)
+        {
+            lifeBars[i].sprite = brightStar;
+        }
+        GameManager.instance.SetSpawnPosition();
+    }
     public void NextBtn()
     {
         AudioManager.instance?.ButtonClick();
         MainMenu.levelNum++;
         Analytics.CustomEvent("LevelStart" + MainMenu.levelNum);
-        if (MainMenu.levelNum > 25)
+        if (MainMenu.levelNum > 500)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         else
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

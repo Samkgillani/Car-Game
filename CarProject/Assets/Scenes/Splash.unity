@@ -154,9 +154,9 @@ MonoBehaviour:
   unityInterstitial: Interstitial_Android
   unityRewarded: Rewarded_Android
   unityBanner: Banner_Android
-  bannerID: 
-  interstitialID: 
-  rewardedID: 
+  bannerID: ca-app-pub-5346214855207630/2660711338
+  interstitialID: ca-app-pub-5346214855207630/9902822823
+  rewardedID: ca-app-pub-5346214855207630/7050310654
   testBannerID: ca-app-pub-3940256099942544/6300978111
   testInterstitialID: ca-app-pub-3940256099942544/1033173712
   testRewardedID: ca-app-pub-3940256099942544/5224354917
